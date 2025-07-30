@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>{{ libro.titulo }}</title>
+</head>
+<body>
+    <h2>{{ libro.titulo }}</h2>
+    <p><strong>Autor:</strong> {{ libro.autor.nombre }} {{ libro.autor.apellido }}</p>
+    <p><strong>Categoría:</strong> {{ libro.categoria.nombre }}</p>
+    <p><strong>Disponible:</strong> {{ libro.disponible|yesno:"Sí,No" }}</p>
+
+    {% if user.is_authenticated %}
+        {% if libro.disponible %}
+            <form method="post">
+                {% csrf_token %}
+                <button type="submit">Solicitar préstamo</button>
+            </form>
+        {% else %}
+            <p>Este libro no está disponible.</p>
+        {% endif %}
+    {% else %}
+        <p><a href="{% url 'login' %}">Inicia sesión</a> para solicitar el préstamo.</p>
+    {% endif %}
+
+    <p><a href="{% url 'lista_libros' %}">← Volver a la lista</a></p>
+</body>
+</html>
