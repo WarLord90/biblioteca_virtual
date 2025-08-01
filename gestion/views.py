@@ -32,3 +32,19 @@ def detalle_libro(request, pk):
         return redirect('lista_libros')
 
     return render(request, 'gestion/detalle_libro.html', {'libro': libro})
+
+def mis_prestamos(request):
+    prestamos = Prestamo.objects.filter(usuario=request.user)
+    return render(request, 'gestion/mis_prestamos.html', {'prestamos': prestamos})
+
+def devolver_prestamo(request, pk):
+    prestamo = get_object_or_404(Prestamo, pk=pk, usuario=request.user)
+
+    if not prestamo.devuelto:
+        prestamo.devuelto = True
+        prestamo.save()
+
+        prestamo.libro.disponible = True
+        prestamo.libro.save()
+
+    return redirect('mis_prestamos')

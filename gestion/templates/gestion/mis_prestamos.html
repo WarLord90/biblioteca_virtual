@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Mis Préstamos</title>
+</head>
+<body>
+    <h2>📚 Mis Préstamos</h2>
+
+    {% if prestamos %}
+        <ul>
+            {% for prestamo in prestamos %}
+                <li>
+                    <strong>{{ prestamo.libro.titulo }}</strong><br>
+                    Autor: {{ prestamo.libro.autor.nombre }} {{ prestamo.libro.autor.apellido }}<br>
+                    Fecha del préstamo: {{ prestamo.fecha_prestamo|date:"d/m/Y" }}<br>
+
+                    {% if not prestamo.devuelto %}
+                        <form action="{% url 'devolver_prestamo' prestamo.pk %}" method="post" style="display:inline;">
+                            {% csrf_token %}
+                            <button type="submit">Devolver</button>
+                        </form>
+                    {% else %}
+                        <em>Devuelto</em>
+                    {% endif %}
+                </li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p>No tienes préstamos registrados.</p>
+    {% endif %}
+
+    <p><a href="{% url 'lista_libros' %}">← Volver a la lista de libros</a></p>
+</body>
+</html>

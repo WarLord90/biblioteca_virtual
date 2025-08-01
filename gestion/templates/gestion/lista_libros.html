@@ -7,6 +7,7 @@
     {% if user.is_authenticated %}
         <p>
             Welcome, {{ user.username }}!
+            <a href="{% url 'mis_prestamos' %}">Mis Préstamos</a>
             <form action="{% url 'logout' %}" method="post" style="display:inline;">
                 {% csrf_token %}
                 <button type="submit" style="background:none;border:none;color:blue;text-decoration:underline;cursor:pointer;">Logout</button>
