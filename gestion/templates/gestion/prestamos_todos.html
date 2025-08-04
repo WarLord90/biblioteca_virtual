@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Todos los Préstamos</title>
+</head>
+<body>
+    <h2>📋 Todos los Préstamos</h2>
+
+    {% if prestamos %}
+        <ul>
+            {% for prestamo in prestamos %}
+                <li>
+                    <strong>{{ prestamo.libro.titulo }}</strong> —
+                    Usuario: {{ prestamo.usuario.username }} —
+                    Fecha: {{ prestamo.fecha_prestamo|date:"d/m/Y" }} —
+                    {% if prestamo.devuelto %}
+                        ✅ Devuelto
+                    {% else %}
+                        ❌ No devuelto
+                    {% endif %}
+                </li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p>No hay préstamos registrados.</p>
+    {% endif %}
+
+    <p><a href="{% url 'lista_libros' %}">← Volver a la lista de libros</a></p>
+</body>
+</html>

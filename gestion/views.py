@@ -3,6 +3,7 @@ from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import login
 from .models import Libro, Prestamo
+from django.contrib.admin.views.decorators import staff_member_required
 
 def lista_libros(request):
     libros = Libro.objects.all()
@@ -48,3 +49,7 @@ def devolver_prestamo(request, pk):
         prestamo.libro.save()
 
     return redirect('mis_prestamos')
+
+def prestamos_todos(request):
+    prestamos = Prestamo.objects.all().order_by('-fecha_prestamo')
+    return render(request, 'gestion/prestamos_todos.html', {'prestamos': prestamos})
