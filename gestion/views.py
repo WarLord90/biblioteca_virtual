@@ -53,3 +53,16 @@ def devolver_prestamo(request, pk):
 def prestamos_todos(request):
     prestamos = Prestamo.objects.all().order_by('-fecha_prestamo')
     return render(request, 'gestion/prestamos_todos.html', {'prestamos': prestamos})
+
+def devolver_libro(request, pk):
+    prestamo = get_object_or_404(Prestamo, pk=pk)
+
+    # Solo permitir al mismo usuario o al admin
+    if prestamo.usuario == request.user or request.user.is_staff:
+        prestamo.devuelto = True
+        prestamo.save()
+
+        prestamo.libro.disponible = True
+        prestamo.libro.save()
+
+    return redirect('mis_prestamos') 
